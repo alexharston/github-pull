@@ -65,6 +65,8 @@ repo_list = [n['nameWithOwner'] for n in repos['data']['viewer']['repositories']
 
 if args.output:
     directory = str(args.output)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
     print('Working directory is: ', directory)
 else:
     directory = os.getcwd()

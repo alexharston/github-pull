@@ -1,2 +1,4 @@
 kirjava
 dotenv
+tqdm
+pprint

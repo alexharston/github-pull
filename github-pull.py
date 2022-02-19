@@ -28,12 +28,20 @@ args = parser.parse_args()
 if args.token:
     GITHUB_PERSONAL_ACCESS_TOKEN = args.token
 else:
-    GITHUB_PERSONAL_ACCESS_TOKEN = os.getenv('GITHUB_PAT')
+    try:
+        GITHUB_PERSONAL_ACCESS_TOKEN = os.getenv('GITHUB_PAT')
+    except:
+        raise FileNotFoundError("No GitHub personal access token found. Please provide one with the -t flag, or via a .env file.")
+        exit()
 
 if args.username:
     GITHUB_USERNAME = args.username
 else:
-    GITHUB_USERNAME = os.getenv('GITHUB_USERNAME')
+    try:
+        GITHUB_USERNAME = os.getenv('GITHUB_USERNAME')
+    except:
+        raise FileNotFoundError("No GitHub username found. Please provide one with the -u flag, or via a .env file.")
+        exit()
 
 client = kirjava.Client(f"https://api.github.com/graphql")
 client.headers["Authorization"] = f"bearer {GITHUB_PERSONAL_ACCESS_TOKEN}"
@@ -56,8 +64,11 @@ repos = client.execute(
     }
     """)
 
-
-total_count = repos['data']['viewer']['repositories']['totalCount']
+try:
+    total_count = repos['data']['viewer']['repositories']['totalCount']
+except KeyError:
+    print("Error: Could not get total count of repositories. Have you provided a username and token, and does the token have the correct permissions?")
+    exit()
 print(f"You have {total_count} total repositories to pull")
 
 repo_list = [n['nameWithOwner'] for n in repos['data']['viewer']['repositories']['nodes']]

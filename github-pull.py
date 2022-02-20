@@ -2,7 +2,6 @@ import kirjava
 import subprocess
 import os
 from dotenv import load_dotenv
-from tqdm import tqdm
 from rich import print
 from rich.padding import Padding
 import argparse
@@ -87,19 +86,22 @@ print(type(args.username))
 
 if __name__ == "__main__":
     print('Pulling repositories...')
-    for r in tqdm(repo_list):
+    for r in repo_list:
+        repo_name = r.split("/")[1]
         if args.include_orgs:
-            if not os.path.exists(r.split("/")[1]):
+            if not os.path.exists(os.path.join(directory, repo_name)):
                 test = Padding(f"[bold magenta]{r}[/bold magenta]", (2, 4))
                 print(test)
                 subprocess.call(["git", "clone", f"git@github.com:{r}.git"], cwd=directory)
             else:
-                print(f"{r} already exists in this directory")
+                print(f"{r} already exists in this directory, attempting to pull...")
+                subprocess.call(["git", "-C", f"{os.path.abspath(os.path.join(directory, repo_name))}", "pull", "origin", "master"], cwd=directory)
         else:
             if GITHUB_USERNAME in r:
-                if not os.path.exists(r.split("/")[1]):
+                if not os.path.exists(os.path.join(directory, repo_name)):
                     test = Padding(f"[bold magenta]{r}[/bold magenta]", (2, 4))
                     print(test)
                     subprocess.call(["git", "clone", f"git@github.com:{r}.git"], cwd=directory)
                 else:
-                    print(f"{r} already exists in this directory")
+                    print(f"{r} already exists in this directory, attempting to pull...")
+                    subprocess.call(["git", "-C", f"{os.path.abspath(os.path.join(directory, repo_name))}", "pull", "origin", "master"], cwd=directory)

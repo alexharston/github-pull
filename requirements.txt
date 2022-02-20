@@ -1,4 +1,3 @@
 kirjava
-dotenv
-tqdm
-pprint
+python-dotenv
+rich

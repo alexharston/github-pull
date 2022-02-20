@@ -10,6 +10,9 @@
 
 _This is designed to work with Unix-based operating systems, and has not been tested on Windows._
 
+## Requirements
+- This script assumes you have your machine's SSH key on your GitHub account.
+
 ## Steps to run
 
 - Create a virtual environment with `virtualenv` (optional but highly recommended)
@@ -20,10 +23,12 @@ GITHUB_PAT=yourpersonalaccesstoken123
 GITHUB_USERNAME=yourgithubusername
 ```
 - Run `pip install -r requirements.txt` to install the required dependencies.
-- Run `python github-pull.py` if executing the file from the root folder you want to clone the repos to. Otherwise, run the file as a command-line tool, like follows:
+- Run `python github-pull.py` if executing the file from the root folder you want to clone the repos to. 
+
+Alternative, you can run GitHub-Pull as a command-line tool, as follows:
 
 ```python
-python github-pull.py --username alexharston --token abcdef123456 --output /home/alex/projects/ --include-orgs 
+python github-pull.py --username johnsmith --token abcdef123456 --output /home/username/projects/ --include-orgs 
 ```
 
 Note that adding a token or username via the command line will override the value stored in the `.env` file
